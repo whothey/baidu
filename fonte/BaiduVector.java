@@ -69,6 +69,11 @@ class BaiduVector
 		return this.positions[index];
 	}
 
+	public String getName()
+	{
+		return this.name;
+	}
+
 	// Guess what.
 	public int getLength()
 	{
