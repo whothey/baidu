@@ -69,6 +69,11 @@ class BaiduVector
 		return this.positions[index];
 	}
 
+	public void setIndex(int index, double value)
+	{
+		this.positions[index] = value;
+	}
+
 	public String getName()
 	{
 		return this.name;
