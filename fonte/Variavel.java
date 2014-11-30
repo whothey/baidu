@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Variavel{
 
 	public void procuraVariavel(String codigo[],int contLinhas){//procura as variaveis
@@ -10,9 +12,12 @@ class Variavel{
 		Comandos  objComandos = new Comandos();
 		Fluxo objFluxo = new Fluxo();
 		FluxoLaco f = new FluxoLaco();
+		boolean foundVector = false;
 
 		String [] guardaVariavel = new String[2000];//VETOR DE VARIAVEIS
 		double [] guardaValores = new double[2000];//VALORES DE CADA VARIAVEL
+
+		ArrayList<BaiduVector> vetores = new ArrayList<BaiduVector>();
 		
 		for(i=0;i<contLinhas;i++){//percorre o codigo procurando por variaveis
 
@@ -21,15 +26,36 @@ class Variavel{
 			if(verificaPosicao.endsWith("$")){ //identifica que é uma declaração de variavel
 				verificaPosicao = verificaPosicao.substring(3);//guarda a partir do terceiro caractere
 
-				guardaVariavel[s]=verificaPosicao.replaceAll("$","");//retira o $ da variavel
-				guardaValores[s]=0;//cada variavel recebe 0 inicialmente - verificar se é null a variavel
-				s++;
-				linhasGuardaVariavel++;
+				try {
+					foundVector = BaiduVector.isVector(verificaPosicao);
+				} catch (InvalidVectorIndexException e) {
+					throw new RuntimeException(e.getMessage());
+				}
+
+				if (foundVector) {
+					String nome = verificaPosicao.substring(0, verificaPosicao.indexOf("["));
+					int indexes;
+					
+					try {
+						indexes = BaiduVector.vectorIndexes(verificaPosicao);
+					} catch (InvalidVectorIndexException e) {
+						throw new RuntimeException(e.getMessage());
+					}
+
+					BaiduVector vetor = new BaiduVector(nome, indexes);
+					vetores.add(vetor);
+				} else {
+					guardaVariavel[s]=verificaPosicao.replaceAll("$","");//retira o $ da variavel
+					guardaValores[s]=0;//cada variavel recebe 0 inicialmente - verificar se é null a variavel
+					s++;
+					linhasGuardaVariavel++;
+				}
+
 			}
 
 		
 			if(verificaPosicao.contains("=")){//procura pelo token de atribuição (=);
-			objOperacoes.verificaOperador(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);//verifica o operador
+				objOperacoes.verificaOperador(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);//verifica o operador
 			}	
 			if(verificaPosicao.contains("IMPRIMA(")){//procura pela palavra chave IMPRIMA
 				objComandos.verificaSaida(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);//verifica e imprime string
