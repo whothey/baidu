@@ -1,0 +1,4 @@
+class InvalidValueException extends Exception
+{
+	
+}

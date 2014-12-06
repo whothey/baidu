@@ -8,8 +8,8 @@ class Comandos{
 		double auxiliar=0;
 		
 		if(verificaPosicao.startsWith("IMPRIMA('")){
-		aux=verificaPosicao.substring(verificaPosicao.indexOf("('")+2, verificaPosicao.indexOf("');"));
-		System.out.println(aux);
+			aux=verificaPosicao.substring(verificaPosicao.indexOf("('")+2, verificaPosicao.indexOf("');"));
+			System.out.println(aux);
 		
 		} else if(verificaPosicao.startsWith("IMPRIMA(")){
 			aux=verificaPosicao.substring(verificaPosicao.indexOf("(")+1, verificaPosicao.indexOf(");"));

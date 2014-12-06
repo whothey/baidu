@@ -1,6 +1,24 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
-class Variavel{
+class Variavel
+{
+	ArrayList<BaiduVector> vetores = new ArrayList<BaiduVector>();
+
+	/**
+	 *	Procura se existe uma variavel-vetor com o nome passado
+	 *	como parâmetro.
+	 *
+	 *	@return o índice do vetor no ArrayList ou -1 caso não encontrado
+	 */
+	public int vectorExists(String name)
+	{
+		for (int i = 0; i < vetores.size(); i++) {
+			if (vetores.get(i).getName().equals(name)) return i;
+		}
+
+		return -1;
+	}
 
 	public void procuraVariavel(String codigo[],int contLinhas){//procura as variaveis
 	
@@ -17,7 +35,6 @@ class Variavel{
 		String [] guardaVariavel = new String[2000];//VETOR DE VARIAVEIS
 		double [] guardaValores = new double[2000];//VALORES DE CADA VARIAVEL
 
-		ArrayList<BaiduVector> vetores = new ArrayList<BaiduVector>();
 		
 		for(i=0;i<contLinhas;i++){//percorre o codigo procurando por variaveis
 
@@ -55,13 +72,71 @@ class Variavel{
 
 		
 			if(verificaPosicao.contains("=")){//procura pelo token de atribuição (=);
-				objOperacoes.verificaOperador(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);//verifica o operador
+				boolean isVector;
+
+				try {
+					isVector = BaiduVector.isVector(verificaPosicao);
+				} catch (InvalidVectorIndexException e) {
+					throw new RuntimeException(e.getMessage());
+				}
+
+				if (isVector) {
+					String nome = verificaPosicao.substring(0, verificaPosicao.indexOf("["));
+					int vectorExists = this.vectorExists(nome);
+					
+					if (vectorExists != -1) {
+						try {
+							vetores.get(vectorExists).parseAttribuition(verificaPosicao);
+						} catch (InvalidVectorIndexException e) {
+							throw new RuntimeException(e.getMessage());
+						} catch (InvalidValueException e) {
+							throw new RuntimeException("Valor de atribuição não pode ser transformado em Float.");
+						}
+					} else {
+						throw new RuntimeException("Não foi encontrada variavel com este nome: " + nome);
+					}
+				} else {
+					objOperacoes.verificaOperador(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);//verifica o operador
+				}
 			}	
 			if(verificaPosicao.contains("IMPRIMA(")){//procura pela palavra chave IMPRIMA
-				objComandos.verificaSaida(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);//verifica e imprime string
+				// Implementando vetores
+				String content = verificaPosicao.substring(verificaPosicao.indexOf("(") + 1, verificaPosicao.indexOf(")"));
+				String nome = BaiduVector.vectorName(content);
+
+				int vectorExists = this.vectorExists(nome);
+
+				if (vectorExists != -1) {
+					try {
+						System.out.println(vetores.get(vectorExists).getIndex(BaiduVector.vectorIndexes(content)));
+					} catch (InvalidVectorIndexException e) {
+						throw new RuntimeException("Indice invalido");
+					}
+				} else {
+					objComandos.verificaSaida(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);//verifica e imprime string
+				}
 			}
 			if(verificaPosicao.contains("ESCREVA(")){
-			objComandos.verificaEntrada(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);
+				// Implementando vetores
+				String content = verificaPosicao.substring(verificaPosicao.indexOf("(") + 1, verificaPosicao.indexOf(")"));
+				String nome = BaiduVector.vectorName(content);
+
+				int vectorExists = this.vectorExists(nome);
+
+				if (vectorExists != -1) {
+					try {
+						BaiduVector vectorAux = vetores.get(vectorExists);
+						int desiredIndex = BaiduVector.vectorIndexes(content);
+						Scanner sc = new Scanner(System.in);
+						Float value = sc.nextFloat();
+
+						vectorAux.setIndex(desiredIndex, value);
+					} catch (InvalidVectorIndexException e) {
+						throw new RuntimeException(e.getMessage());
+					}
+				} else {
+					objComandos.verificaEntrada(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel);
+				}
 			}
 			if (verificaPosicao.contains("SE(")) {
 				

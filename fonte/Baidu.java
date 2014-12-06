@@ -14,7 +14,7 @@ class Baidu{
 			System.out.println("FILE NOT FOUND");
 			
 		}
-		
+				
 		Decifra le = new Decifra(file);
 		
 	}

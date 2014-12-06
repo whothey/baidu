@@ -59,6 +59,11 @@ class BaiduVector
 		}
 	}
 
+	public static String vectorName(String str)
+	{
+		return str.substring(0, str.indexOf("["));
+	}
+
 	/**
 	 *	Como estamos basendo o vetor da Baidu em cima dos vetores do Java,
 	 *	teremos os mesmos erros causados no Java.
@@ -83,5 +88,20 @@ class BaiduVector
 	public int getLength()
 	{
 		return this.length;
+	}
+
+	public void parseAttribuition(String line) throws InvalidVectorIndexException, InvalidValueException
+	{
+		int index = BaiduVector.vectorIndexes(line);
+		String valueStr = line.substring(line.indexOf("=") + 1);
+		Float value;
+
+		try {
+			value = Float.parseFloat(valueStr);
+		} catch (NumberFormatException e) {
+			throw new InvalidValueException();
+		}
+
+		setIndex(index, value);
 	}
 }
