@@ -31,6 +31,7 @@ class Variavel
 		Fluxo objFluxo = new Fluxo();
 		FluxoLaco f = new FluxoLaco();
 		boolean foundVector = false;
+		Scanner sc = new Scanner(System.in);
 
 		String [] guardaVariavel = new String[2000];//VETOR DE VARIAVEIS
 		double [] guardaValores = new double[2000];//VALORES DE CADA VARIAVEL
@@ -127,7 +128,6 @@ class Variavel
 					try {
 						BaiduVector vectorAux = vetores.get(vectorExists);
 						int desiredIndex = BaiduVector.vectorIndexes(content);
-						Scanner sc = new Scanner(System.in);
 						Float value = sc.nextFloat();
 
 						vectorAux.setIndex(desiredIndex, value);
