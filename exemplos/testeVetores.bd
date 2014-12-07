@@ -1,0 +1,15 @@
+var teste[2]$
+
+teste[0]$ = 10
+
+IMPRIMA(teste[0]$);
+
+ESCREVA(teste[1]$);
+
+IMPRIMA(teste[1]$);
+
+SE(teste[0]$@teste[1]$)
+	IMPRIMA('igual');
+SENAO
+	IMPRIMA('diferente');
+FIM;
