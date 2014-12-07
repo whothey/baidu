@@ -141,12 +141,13 @@ class Variavel
 			if (verificaPosicao.contains("SE(")) {
 				
 				a=i;//se caso não entrar no if a controla o avanço
-				i = objFluxo.ControlaFluxo(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel,i);//ocorrencia do if, manda inclusive qual é a linha em que ele esta
+				i = objFluxo.ControlaFluxo(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel,i,vetores);//ocorrencia do if, manda inclusive qual é a linha em que ele esta
 				//se i recebe 0 eh pq o if não eh valido então procuro pelo fim se apartir de i
 				
 				if(i==-1){
 					z=1;
 					compara="FIM;";
+					String senao = "SENAO";
 					for (a+=1; a<contLinhas; a++) {//procura pelo FIM
 						if(codigo[a].contains("SE(")){
 							z++;
@@ -154,7 +155,7 @@ class Variavel
 						if(codigo[a].contains("FIM;")){
 							z--;
 						}
-						if(codigo[a].equals(compara)  && z == 0){//encrementa as linhas do código
+						if((codigo[a].equals(compara) || codigo[a].equals(senao)) && z == 0){//encrementa as linhas do código
 							i=a;//i recebe um indice anterior ao que deve proseguir no if e continua ate que seja falso
 							break;
 						}
@@ -168,7 +169,7 @@ class Variavel
 			}	
 			else if(verificaPosicao.contains("LACO(")){//controle de laco
 				b=i; // b recebe a linha de execução
-				i = objFluxo.ControlaFluxo(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel,i);//retorna linha do laco onde deve executar
+				i = objFluxo.ControlaFluxo(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel,i,vetores);//retorna linha do laco onde deve executar
 				if(i!=-1){
 					volta=i;
 					f.push(volta);

@@ -61,7 +61,23 @@ class BaiduVector
 
 	public static String vectorName(String str)
 	{
-		return str.substring(0, str.indexOf("["));
+		int startBracket = str.indexOf("[");
+
+		if (startBracket == -1) return str;
+
+		return str.substring(0, startBracket);
+	}
+
+	/**
+	 *	Extrai o primeiro vetor da string
+	 */
+	public static String extractVectorFromStr(String str)
+	{
+		// Removendo tudo após a variável
+		str = str.substring(0, str.indexOf("$"));
+		str = str.substring(str.lastIndexOf(" ") + 1);
+
+		return str;
 	}
 
 	/**
