@@ -153,13 +153,7 @@ class Variavel
 				
 				a=i;//se caso não entrar no if a controla o avanço
 				i = objFluxo.ControlaFluxo(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel,i,vetores);//ocorrencia do if, manda inclusive qual é a linha em que ele esta
-				//se i recebe 0 eh pq o if não eh valido então procuro pelo fim se apartir de i
-
-				/**
-				 *	Parece que o comentário acima está equivocado e i na verdade recebe -1, pois 0 é uma linha válida.
-				 *	E aliás no próximo if temos um -1 que surgiu das profundezas do inferno.
-				 *	Então presumo que, na verdade, o valor de um SE falso é -1
-				 */
+				//se i recebe -1 eh pq o if não eh valido então procuro pelo fim se apartir de i
 
 				if (i == -1) pilhaFluxo.push(false);
 				else pilhaFluxo.push(true);
