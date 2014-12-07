@@ -161,7 +161,10 @@ class Variavel
 				 *	Então presumo que, na verdade, o valor de um SE falso é -1
 				 */
 
-				if(i==-1){
+				if (i == -1) pilhaFluxo.push(false);
+				else pilhaFluxo.push(true);
+
+				if(pilhaFluxo.peek() == false){
 					z=1;
 					compara="FIM;";
 					String senao = "SENAO";
@@ -169,6 +172,11 @@ class Variavel
 						if(codigo[a].contains("SE(")){
 							z++;
 						}
+
+						if (codigo[a].contains("SENAO") && z == 1) {
+							z--;
+						}
+
 						if(codigo[a].contains("FIM;")){
 							z--;
 						}
@@ -179,12 +187,42 @@ class Variavel
 					}
 				}
 				
-			} 
+			} else if (verificaPosicao.contains("SENAO")) {
+				// Inverte o valor verdade
+				if (pilhaFluxo.empty()) {
+					throw new RuntimeException("Não há um SE para este SENAO");
+				} else {
+					pilhaFluxo.push(!pilhaFluxo.pop());
 
-			else if(verificaPosicao.contains("FIM;")) {
-				continue;
-			}	
-			else if(verificaPosicao.contains("LACO(")){//controle de laco
+					if(pilhaFluxo.peek() == false){
+						a=i;
+						z=1;
+						compara="FIM;";
+						String senao = "SENAO";
+						for (a+=1; a<contLinhas; a++) {//procura pelo FIM
+							if(codigo[a].contains("SE(")){
+								z++;
+							}
+							if(codigo[a].contains("FIM;")){
+								z--;
+							}
+							if((codigo[a].equals(compara) || codigo[a].equals(senao)) && z == 0){//encrementa as linhas do código
+								i=a;//i recebe um indice anterior ao que deve proseguir no if e continua ate que seja falso
+								break;
+							}
+						}
+					} else {
+						continue;
+					}
+				}
+			} else if(verificaPosicao.contains("FIM;")) {
+				if (pilhaFluxo.empty()) {
+					throw new RuntimeException("Não há um SE para este FIM;");
+				} else {
+					pilhaFluxo.pop();
+					continue;
+				}
+			} else if(verificaPosicao.contains("LACO(")){//controle de laco
 				b=i; // b recebe a linha de execução
 				i = objFluxo.ControlaFluxo(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel,i,vetores);//retorna linha do laco onde deve executar
 				if(i!=-1){
