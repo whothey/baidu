@@ -109,7 +109,7 @@ class BaiduVector
 	public void parseAttribuition(String line) throws InvalidVectorIndexException, InvalidValueException
 	{
 		int index = BaiduVector.vectorIndexes(line);
-		String valueStr = line.substring(line.indexOf("=") + 1);
+		String valueStr = line.substring(line.indexOf("=") + 1, line.lastIndexOf(";"));
 		Float value;
 
 		try {
