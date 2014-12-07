@@ -1,6 +1,6 @@
 var teste[2]$
 
-teste[0]$ = 10
+teste[0]$ = 10;
 
 IMPRIMA(teste[0]$);
 
@@ -13,3 +13,5 @@ SE(teste[0]$@teste[1]$)
 SENAO
 	IMPRIMA('diferente');
 FIM;
+
+IMPRIMA('fora do if');
