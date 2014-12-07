@@ -1,9 +1,20 @@
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.Scanner;
 
 class Variavel
 {
-	ArrayList<BaiduVector> vetores = new ArrayList<BaiduVector>();
+	/**
+	 *	Guarda a lista de Vetores do Programa
+	 */
+	private ArrayList<BaiduVector> vetores = new ArrayList<BaiduVector>();
+
+	/**
+	 *	Guarda e controla a pilha de IFs
+	 *	É uma pilha de Booleans que, o valor do topo representa o valor
+	 *	verdade do último SE intepretado.
+	 */
+	private Stack<Boolean> pilhaFluxo = new Stack<Boolean>();
 
 	/**
 	 *	Procura se existe uma variavel-vetor com o nome passado
@@ -143,7 +154,13 @@ class Variavel
 				a=i;//se caso não entrar no if a controla o avanço
 				i = objFluxo.ControlaFluxo(verificaPosicao,guardaVariavel,guardaValores,linhasGuardaVariavel,i,vetores);//ocorrencia do if, manda inclusive qual é a linha em que ele esta
 				//se i recebe 0 eh pq o if não eh valido então procuro pelo fim se apartir de i
-				
+
+				/**
+				 *	Parece que o comentário acima está equivocado e i na verdade recebe -1, pois 0 é uma linha válida.
+				 *	E aliás no próximo if temos um -1 que surgiu das profundezas do inferno.
+				 *	Então presumo que, na verdade, o valor de um SE falso é -1
+				 */
+
 				if(i==-1){
 					z=1;
 					compara="FIM;";
