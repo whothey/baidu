@@ -200,7 +200,7 @@ class Variavel
 							if(codigo[a].contains("FIM;")){
 								z--;
 							}
-							if((codigo[a].equals(compara) || codigo[a].equals(senao)) && z == 0){//encrementa as linhas do código
+							if((codigo[a].equals(compara) && z == 0){//encrementa as linhas do código
 								i=a;//i recebe um indice anterior ao que deve proseguir no if e continua ate que seja falso
 								break;
 							}
